@@ -21,11 +21,23 @@
     path: "{{ terraform_path }}"
     state: directory
 
+- name: Linux | Check if terraform binary exists
+  stat:
+    path: "{{ terraform_path }}/terraform"
+  register: terraform_st
+
+- name: Linux | Check terraform binary version
+  shell: "{{ terraform_path }}/terraform --version | grep '^Terraform v' | sed 's/Terraform v//'"
+  register: terraform_installed
+  changed_when: False
+  when: terraform_st.stat.exists
+
 - name: Linux | Download and extract Terraform files
   unarchive: 
     src: "{{ terraform_url }}"
     dest: "{{ terraform_path }}"
     remote_src: yes
+  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != '{{ terraform_version }}')"
 
 - name: Linux | Test if $HOME/.bashrc exists
   stat: path="{{ local_home }}/.bashrc" 
@@ -61,3 +73,4 @@
 - name: Linux | Check that Terraform is not out of date
   assert: 
     that: "'Terraform is out of date' not in terraform_status.stdout"
+  when: terraform_latest

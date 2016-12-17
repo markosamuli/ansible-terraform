@@ -11,3 +11,4 @@
 - name: OS X | Check that Terraform is not out of date
   assert: 
     that: "'Terraform is out of date' not in terraform_status.stdout"
+  when: terraform_latest
