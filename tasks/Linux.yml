@@ -1,0 +1,63 @@
+---
+
+- name: Linux | Set Terraform installation variables
+  set_fact:
+    local_home: "{{ lookup('env','HOME') }}"
+    terraform_version: "0.8.1"
+    terraform_path: "/opt/terraform"
+
+- name: Linux | Set Terraform package download URL (64bit)
+  set_fact:
+    terraform_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip"    
+  when: ansible_architecture == "x86_64"
+
+- name: Linux | Set Terraform package download URL (32bit)
+  set_fact:
+    terraform_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_386.zip"    
+  when: ansible_architecture == "i386"
+
+- name: Linux | Create Terraform directory
+  file:
+    path: "{{ terraform_path }}"
+    state: directory
+
+- name: Linux | Download and extract Terraform files
+  unarchive: 
+    src: "{{ terraform_url }}"
+    dest: "{{ terraform_path }}"
+    remote_src: yes
+
+- name: Linux | Test if $HOME/.bashrc exists
+  stat: path="{{ local_home }}/.bashrc" 
+  register: bashrc_stat
+  become: False
+
+- name: Linux | Add Terraform to PATH in $HOME/.bashrc
+  lineinfile: 
+    dest: "{{ local_home }}/.bashrc" 
+    line: "export PATH={{ terraform_path }}:$PATH"
+  become: False
+  when: bashrc_stat.stat.exists == True  
+
+- name: Linux | Test if $HOME/.zshrc exists
+  stat: path="{{ local_home }}/.zshrc" 
+  register: zshrc_stat
+  become: False
+
+- name: Linux | Add Terraform to PATH in $HOME/.zshrc
+  lineinfile: 
+    dest: "{{ local_home }}/.zshrc" 
+    line: "export PATH={{ terraform_path }}:$PATH"
+  become: False
+  when: zshrc_stat.stat.exists == True
+
+- name: Linux | Get Terraform version
+  environment:
+    PATH: "{{ terraform_path }}:{{ ansible_env.PATH }}"
+  command: terraform --version
+  register: terraform_status
+  changed_when: False
+
+- name: Linux | Check that Terraform is not out of date
+  assert: 
+    that: "'Terraform is out of date' not in terraform_status.stdout"
