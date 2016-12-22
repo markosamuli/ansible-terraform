@@ -3,8 +3,7 @@
 - name: Linux | Set Terraform installation variables
   set_fact:
     local_home: "{{ lookup('env','HOME') }}"
-    terraform_version: "0.8.1"
-    terraform_path: "/opt/terraform"
+  become: no
 
 - name: Linux | Set Terraform package download URL (64bit)
   set_fact:

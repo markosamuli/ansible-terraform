@@ -1,6 +1,10 @@
 ---
 # tasks file for markosamuli.visual-studio-code
 
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "default.yml"
+
 - include: Linux.yml
   when: "{{ ansible_system == 'Linux' }}"
 
