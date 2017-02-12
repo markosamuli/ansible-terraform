@@ -1,4 +1,3 @@
 ---
 
-terraform_version: "0.8.5"
-terraform_latest: True
+terraform_latest: False

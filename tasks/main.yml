@@ -1,9 +1,13 @@
 ---
 # tasks file for markosamuli.visual-studio-code
 
-- include_vars: "{{ item }}"
+- name: Load variables for the target system
+  include_vars: "{{ item }}"
   with_first_found:
-    - "default.yml"
+    - files:
+      - "{{ ansible_system }}_{{ ansible_architecture }}.yml"
+      - "default.yml"
+      paths: vars
 
 - include: Linux.yml
   when: "{{ ansible_system == 'Linux' }}"
