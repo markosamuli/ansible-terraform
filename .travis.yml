@@ -6,11 +6,11 @@ matrix:
       dist: trusty
       sudo: required
       language: generic
-      python: 
+      python:
        - "2.7"
     - os: osx
       language: generic
-      python: 
+      python:
        - "2.7"
 
 # Install Ansible
@@ -36,8 +36,8 @@ install:
 
   # Configure ansible.cfg on Linux
   - >
-    if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then 
-      printf '\n[privilege_escalation]\nbecome=True' >> ansible.cfg 
+    if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
+      printf '\n[privilege_escalation]\nbecome=True' >> ansible.cfg
     fi
 
 before_script:
@@ -45,8 +45,8 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get head || true; fi
 
 script:
-  # Basic role syntax check 
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check 
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
   # Test role run
   - >
@@ -58,6 +58,8 @@ script:
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
+
+  - command -v terraform
 
 notifications:
   email: false
