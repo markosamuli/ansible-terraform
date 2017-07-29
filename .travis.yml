@@ -4,6 +4,12 @@ matrix:
   include:
     - os: linux
       dist: trusty
+      sudo: false
+      language: generic
+      python:
+       - "2.7"
+    - os: linux
+      dist: trusty
       sudo: required
       language: generic
       python:
@@ -26,7 +32,8 @@ before_install:
 
 install:
   # Install Ansible with pip
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then sudo pip install ansible; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_SUDO" == "true" ]]; then sudo pip install ansible; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_SUDO" == "false" ]]; then pip install ansible; fi
 
   # Check Ansible version
   - ansible --version
@@ -36,7 +43,7 @@ install:
 
   # Configure ansible.cfg on Linux
   - >
-    if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$TRAVIS_SUDO" == "true" ]]; then
       printf '\n[privilege_escalation]\nbecome=True' >> ansible.cfg
     fi
 
