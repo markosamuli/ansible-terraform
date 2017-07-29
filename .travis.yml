@@ -8,16 +8,22 @@ matrix:
       language: generic
       python:
        - "2.7"
+      env:
+        TERRAFORM_BIN_DIR: ~/bin
     - os: linux
       dist: trusty
       sudo: required
       language: generic
       python:
        - "2.7"
+      env:
+        TERRAFORM_BIN_DIR: /usr/local/bin
     - os: osx
       language: generic
       python:
        - "2.7"
+      env:
+        TERRAFORM_BIN_DIR: /usr/local/bin
 
 # Install Ansible
 addons:
@@ -57,16 +63,23 @@ script:
 
   # Test role run
   - >
-    ansible-playbook tests/test.yml -i tests/inventory --connection=local
+    ansible-playbook tests/test.yml -i tests/inventory --connection=local -e terraform_bin_dir=$TERRAFORM_BIN_DIR
 
   # Test idempotence
   - >
-    ansible-playbook tests/test.yml -i tests/inventory --connection=local
+    ansible-playbook tests/test.yml -i tests/inventory --connection=local -e terraform_bin_dir=$TERRAFORM_BIN_DIR
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  - command -v terraform
+  - >
+    if [[ -e "$TERRAFORM_BIN_DIR/terraform" ]]; then
+      echo "Terraform binary installed in $TERRAFORM_BIN_DIR/terraform"
+    else
+      echo "Terraform binary not found in $TERRAFORM_BIN_DIR/terraform"
+      exit 1
+    fi
+  # - command -v terraform
 
 notifications:
   email: false

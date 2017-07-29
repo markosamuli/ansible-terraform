@@ -34,7 +34,7 @@
     path: "{{ terraform_path }}/{{ terraform_file }}"
     state: absent
 
-- name: Linux | Symlink terraform to /usr/local/bin
+- name: "Linux | Symlink terraform to {{ terraform_bin_dir }}"
   file:
     src: "{{ terraform_path }}/terraform"
     dest: "{{ terraform_bin_dir }}/terraform"
