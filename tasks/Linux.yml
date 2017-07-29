@@ -21,20 +21,20 @@
     url: "{{ terraform_url }}"
     dest: "{{ terraform_path }}/{{ terraform_file }}"
     checksum: "{{ terraform_checksum }}"
-  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != '{{ terraform_version }}')"
+  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != terraform_version)"
 
 - name: Linux | Extract Terraform binary
   unarchive:
     src: "{{ terraform_path }}/{{ terraform_file }}"
     dest: "{{ terraform_path }}"
-  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != '{{ terraform_version }}')"
+  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != terraform_version)"
 
 - name: Linux | Cleanup
   file:
     path: "{{ terraform_path }}/{{ terraform_file }}"
     state: absent
 
-- name: Linux | Symlink terraform to /usr/local/bin
+- name: "Linux | Symlink terraform to {{ terraform_bin_dir }}"
   file:
     src: "{{ terraform_path }}/terraform"
     dest: "{{ terraform_bin_dir }}/terraform"
