@@ -2,9 +2,9 @@
 
 terraform_arch: "amd64"
 terraform_system: "linux"
-terraform_version: "0.9.11"
+terraform_version: "0.11.10"
 terraform_file: "terraform_{{ terraform_version }}_{{ terraform_system }}_{{ terraform_arch }}.zip"
 terraform_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/{{ terraform_file }}"
-terraform_checksum: "sha256:804d31cfa5fee5c2b1bff7816b64f0e26b1d766ac347c67091adccc2626e16f3"
+terraform_checksum: "sha256:43543a0e56e31b0952ea3623521917e060f2718ab06fe2b2d506cfaa14d54527"
 terraform_bin_dir: /usr/local/bin
 terraform_path: "/opt/terraform"
