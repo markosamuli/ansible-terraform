@@ -10,7 +10,7 @@
       paths: vars
 
 - include: Linux.yml
-  when: "{{ ansible_system == 'Linux' }}"
+  when: ansible_system == 'Linux'
 
 - include: Darwin.yml
-  when: "{{ ansible_os_family == 'Darwin' }}"
+  when: ansible_os_family == 'Darwin'
