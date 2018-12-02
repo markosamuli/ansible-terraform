@@ -12,7 +12,23 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      env: ANSIBLE_VERSION=2.4.0.0
+      env: ANSIBLE_VERSION=2.3.3.0
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: ANSIBLE_VERSION=2.4.6.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.5.13.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.6.10.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.7.4.0
     - os: osx
 
 # Install Ansible
@@ -62,7 +78,3 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   - command -v terraform
-
-# notifications:
-#   email: false
-#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
