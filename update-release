@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+###
+# Print error into STDERR
+###
+error() {
+    echo "$@" 1>&2
+}
+
+###
+# Get latest release for a GitHub repository
+###
+get_latest_release() {
+    local repository=$1
+    local url="https://api.github.com/repos/${repository}/releases/latest"
+    curl --silent "${url}" | \
+        grep '"tag_name":' | \
+        sed -E 's/.*"([^"]+)".*/\1/'
+}
+
+###
+# Get checksum for the release
+###
+get_terraform_checksum() {
+    local os=$1
+    local arch=$2
+    local release=$3
+
+    local url="https://releases.hashicorp.com/terraform/${release}"
+    url="${url}/terraform_${release}_SHA256SUMS"
+    local file="terraform_${release}_${os}_${arch}.zip"
+
+    curl --silent "${url}" | \
+        grep "${file}" | \
+        awk '{ print $1 }'
+}
+
+###
+# Update version
+###
+update_version() {
+    local os=$1
+    local arch=$2
+    local release=$3
+    local checksum=""
+    checksum=$(get_terraform_checksum ${os} ${arch} ${release})
+    [ -z "${checksum}" ] && {
+        error "Failed to get checksum for ${os} ${arch} ${release}"; return 1;
+    }
+    update_ansible_vars ${os} ${arch} ${release} ${checksum}
+}
+
+###
+# Update version and checksum variables
+###
+update_ansible_vars() {
+    local os=$1
+    local arch=$2
+    local version=$3
+    local checksum=$4
+
+    # Ansible vars file to update
+    if [ "${os}" == "linux" ]; then
+        local ansible_os="Linux"
+    fi
+    [ -z "${ansible_os}" ] && {
+        error "Unsupported OS ${os}"; return 1;
+    }
+
+    if [ "${arch}" == "amd64" ]; then
+        local ansible_arch="x86_64"
+    fi
+    [ -z "${ansible_arch}" ] && {
+        error "Unsupported architecture ${arch}"; return 1;
+    }
+    local vars_file=vars/${ansible_os}_${ansible_arch}.yml
+
+    # Update variables
+    echo "Updating variables in ${vars_file}"
+    sed -i.save -r "s/^(terraform_version):.*$/\1: \"${version}\"/" \
+        ${vars_file}
+    sed -i.save -r "s/^(terraform_checksum):.*$/\1: \"sha256:${checksum}\"/" \
+        ${vars_file}
+    rm ${vars_file}.save
+}
+
+###
+# Get latest Terraform version
+###
+latest_terraform_version() {
+    local latest_release=""
+    latest_release=$(get_latest_release hashicorp/terraform)
+    [ -z "${latest_release}" ] && {
+        error "Failed to get latest release from GitHub"; return 1;
+    }
+    echo "${latest_release}" | sed -E 's/^v(.*)/\1/'
+}
+
+set -e
+
+TERRAFORM_VERSION=$(latest_terraform_version)
+echo "Latest Terraform release is ${TERRAFORM_VERSION}"
+
+update_version linux amd64 ${TERRAFORM_VERSION}

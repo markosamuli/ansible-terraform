@@ -12,7 +12,23 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      env: ANSIBLE_VERSION=2.4.0.0
+      env: ANSIBLE_VERSION=2.3.3.0
+    - os: linux
+      dist: trusty
+      sudo: required
+      env: ANSIBLE_VERSION=2.4.6.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.5.13.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.6.10.0
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: ANSIBLE_VERSION=2.7.4.0
     - os: osx
 
 # Install Ansible
@@ -25,10 +41,15 @@ before_install:
   # Install Ansible with Homebrew on OS X
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update         ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ansible; fi
+  # Install pre-commit with Homebrew
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install pre-commit; fi
 
 install:
   # Install Ansible with pip
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then sudo pip install ansible==${ANSIBLE_VERSION}; fi
+
+  # Install pre-commit with pip
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then sudo pip install pre-commit; fi
 
   # Check Ansible version
   - ansible --version
@@ -47,6 +68,9 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rvm get head || true; fi
 
 script:
+  # Run pre-commit hooks
+  - pre-commit run -a
+
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
 
@@ -62,7 +86,3 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   - command -v terraform
-
-# notifications:
-#   email: false
-#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
