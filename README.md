@@ -16,7 +16,7 @@ On macOS, Homebrew [terraform formula](https://formulae.brew.sh/formula/terrafor
 
 ## Linux
 
-On Ubuntu, terraform binary is installed into `/opt/terraform` and symlink created 
+On Ubuntu, terraform binary is installed into `/opt/terraform` and symlink created
 in `/usr/local/bin`.
 
 To change installed version, update the version and checksum:
