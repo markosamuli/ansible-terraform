@@ -1,6 +1,8 @@
 # ansible-terraform
 
 [![Build Status](https://travis-ci.org/markosamuli/ansible-terraform.svg?branch=master)](https://travis-ci.org/markosamuli/ansible-terraform)
+[![GitHub release](https://img.shields.io/github/release/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/releases)
+[![License](https://img.shields.io/github/license/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/blob/master/LICENSE)
 
 Ansible role toi nstall [Terraform](https://www.hashicorp.com/) on Ubuntu and macOS.
 
@@ -31,4 +33,9 @@ version.
 
 ## License
 
-MIT
+[MIT](LICENSE)
+
+## Author Information
+
+- [@markosamuli](https://github.com/markosamuli)
+
