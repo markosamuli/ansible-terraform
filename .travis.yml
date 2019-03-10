@@ -37,6 +37,14 @@ addons:
     packages:
     - python-pip
 
+branches:
+  only:
+    - master
+    - develop
+    - /^feature\/.*$/
+    - /^bugfix\/.*$/
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
 cache:
   directories:
   - $HOME/.cache/pre-commit/
