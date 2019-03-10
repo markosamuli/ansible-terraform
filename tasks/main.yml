@@ -6,6 +6,7 @@
   - files:
     - "{{ ansible_system }}_{{ ansible_architecture }}.yml"
     paths: vars
+    skip: true
 
 - name: Install on Linux
   include_tasks: Linux.yml
