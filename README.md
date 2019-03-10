@@ -1,4 +1,4 @@
-# ansible-terraform
+# markosamuli.terraform
 
 [![Build Status](https://travis-ci.org/markosamuli/ansible-terraform.svg?branch=master)](https://travis-ci.org/markosamuli/ansible-terraform)
 [![GitHub release](https://img.shields.io/github/release/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/releases)
@@ -33,7 +33,7 @@ version.
 
 ## License
 
-[MIT](LICENSE)
+- [MIT](LICENSE)
 
 ## Author Information
 
