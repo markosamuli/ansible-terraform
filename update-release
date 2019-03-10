@@ -77,9 +77,9 @@ update_ansible_vars() {
 
     # Update variables
     echo "Updating variables in ${vars_file}"
-    sed -i.save -r "s/^(terraform_version):.*$/\1: \"${version}\"/" \
+    sed -i.save -E "s/^(terraform_version):.*$/\1: \"${version}\"/" \
         ${vars_file}
-    sed -i.save -r "s/^(terraform_checksum):.*$/\1: \"sha256:${checksum}\"/" \
+    sed -i.save -E "s/^(terraform_checksum):.*$/\1: \"sha256:${checksum}\"/" \
         ${vars_file}
     rm ${vars_file}.save
 }
