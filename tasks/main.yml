@@ -7,8 +7,10 @@
     - "{{ ansible_system }}_{{ ansible_architecture }}.yml"
     paths: vars
 
-- include_tasks: Linux.yml
+- name: Install on Linux
+  include_tasks: Linux.yml
   when: ansible_system == 'Linux'
 
-- include_tasks: Darwin.yml
+- name: Install on macOS
+  include_tasks: Darwin.yml
   when: ansible_os_family == 'Darwin'

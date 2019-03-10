@@ -5,47 +5,57 @@
     path: "{{ terraform_path }}"
     state: directory
 
+- name: Linux | Create Terraform version directory
+  file:
+    path: "{{ terraform_version_dir }}"
+    state: directory
+
 - name: Linux | Check if terraform binary exists
   stat:
-    path: "{{ terraform_path }}/terraform"
-  register: terraform_st
-
-- name: Linux | Check terraform binary version
-  shell: "{{ terraform_path }}/terraform --version | grep '^Terraform v' | sed 's/Terraform v//'"
-  register: terraform_installed
-  changed_when: False
-  when: terraform_st.stat.exists
+    path: "{{ terraform_version_bin }}"
+  register: terraform_bin_st
 
 - name: Linux | Download Terraform release
   get_url:
     url: "{{ terraform_url }}"
-    dest: "{{ terraform_path }}/{{ terraform_file }}"
+    dest: "{{ terraform_version_dir }}/{{ terraform_file }}"
     checksum: "{{ terraform_checksum }}"
-  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != terraform_version)"
+  when: not terraform_bin_st.stat.exists
 
 - name: Linux | Extract Terraform binary
   unarchive:
-    src: "{{ terraform_path }}/{{ terraform_file }}"
-    dest: "{{ terraform_path }}"
-  when: "(not terraform_st.stat.exists) or (terraform_installed.stdout != terraform_version)"
+    src: "{{ terraform_version_dir }}/{{ terraform_file }}"
+    dest: "{{ terraform_version_dir }}"
+    creates: "{{ terraform_version_bin }}"
+  when: not terraform_bin_st.stat.exists
 
 - name: Linux | Cleanup
   file:
-    path: "{{ terraform_path }}/{{ terraform_file }}"
+    path: "{{ terraform_version_dir }}/{{ terraform_file }}"
     state: absent
 
 - name: Linux | Symlink terraform to /usr/local/bin
   file:
-    src: "{{ terraform_path }}/terraform"
-    dest: "{{ terraform_bin_dir }}/terraform"
+    src: "{{ terraform_version_bin }}"
+    dest: "{{ terraform_bin }}"
     state: link
 
-- name: Linux | Get Terraform version
-  command: terraform --version
-  register: terraform_status
-  changed_when: False
+- name: Linux | Cleanup legacy binaries
+  file:
+    path: "{{ terraform_path }}/terraform"
+    state: absent
 
-- name: Linux | Check that Terraform is not out of date
+- name: Linux | Check Terraform binary version
+  shell: "set -o pipefail && terraform --version | grep '^Terraform v'"
+  args:
+    executable: /bin/bash
+  register: terraform_bin_version
+  changed_when: false
+
+- name: Linux | Terraform version
+  set_fact:
+    terraform_installed_version: "{{ terraform_bin_version.stdout | replace('Terraform v', '') }}"
+
+- name: Linux | Check that Terraform version is installed correctly
   assert:
-    that: "'Terraform is out of date' not in terraform_status.stdout"
-  when: terraform_latest
+    that: "terraform_installed_version == terraform_version"
