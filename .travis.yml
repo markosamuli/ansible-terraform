@@ -32,6 +32,7 @@ matrix:
     - name: "macOS 10.13 (High Sierra) with Xcode 10.1"
       os: osx
       osx_image: xcode10.1
+      env: RVM_GPG_IMPORT=yes
 
 addons:
   apt:
@@ -58,6 +59,12 @@ before_cache:
   - rm -f $HOME/.cache/pre-commit/pre-commit.log
 
 before_install:
+  # Import new GPG key for RVM when necessary
+  - >
+    if [[ "$RVM_GPG_IMPORT" == "yes" ]]; then
+      command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    fi
+
   # Update Homebrew to fix HOMEBREW_LOGS error
   - if [[ "$BREW_UPGRADE" == "yes" ]]; then brew update; fi
 
