@@ -1,12 +1,13 @@
 ---
 
 - name: OS X | Install Terraform
-  homebrew: name=terraform
+  homebrew:
+    name: terraform
 
 - name: OS X | Get Terraform version
   command: terraform --version
   register: terraform_status
-  changed_when: False
+  changed_when: false
 
 - name: OS X | Check that Terraform is not out of date
   assert:

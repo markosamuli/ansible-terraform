@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 # vim:ts=2:sw=2:ai:si:syntax=yaml
 #
-# Travis CI configuration
+# Travis CI configuration
 ---
 
 language: generic
@@ -36,11 +36,11 @@ matrix:
 addons:
   apt:
     packages:
-    - python-pip
+      - python-pip
   homebrew:
     packages:
-    - ansible
-    - pre-commit
+      - ansible
+      - pre-commit
 
 branches:
   only:
@@ -52,10 +52,10 @@ branches:
 
 cache:
   directories:
-  - $HOME/.cache/pre-commit/
+    - $HOME/.cache/pre-commit/
 
 before_cache:
-- rm -f $HOME/.cache/pre-commit/pre-commit.log
+  - rm -f $HOME/.cache/pre-commit/pre-commit.log
 
 before_install:
   # Update Homebrew to fix HOMEBREW_LOGS error

@@ -1,16 +1,14 @@
 ---
-# tasks file for markosamuli.visual-studio-code
 
 - name: Load variables for the target system
   include_vars: "{{ item }}"
   with_first_found:
-    - files:
-      - "{{ ansible_system }}_{{ ansible_architecture }}.yml"
-      - "default.yml"
-      paths: vars
+  - files:
+    - "{{ ansible_system }}_{{ ansible_architecture }}.yml"
+    paths: vars
 
-- include: Linux.yml
+- include_tasks: Linux.yml
   when: ansible_system == 'Linux'
 
-- include: Darwin.yml
+- include_tasks: Darwin.yml
   when: ansible_os_family == 'Darwin'
