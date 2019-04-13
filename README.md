@@ -1,8 +1,12 @@
 # markosamuli.terraform
 
-[![Build Status](https://travis-ci.org/markosamuli/ansible-terraform.svg?branch=master)](https://travis-ci.org/markosamuli/ansible-terraform)
 [![GitHub release](https://img.shields.io/github/release/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/releases)
 [![License](https://img.shields.io/github/license/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/blob/master/LICENSE)
+
+| Branch  | Status |
+|---------|--------|
+| master  | [![Build Status](https://travis-ci.org/markosamuli/ansible-terraform.svg?branch=master)](https://travis-ci.org/markosamuli/ansible-terraform)
+| develop | [![Build Status](https://travis-ci.org/markosamuli/ansible-terraform.svg?branch=develop)](https://travis-ci.org/markosamuli/ansible-terraform)
 
 Ansible role to install [Terraform] on Ubuntu and macOS.
 
