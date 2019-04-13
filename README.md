@@ -48,4 +48,3 @@ See [Terraform Downloads] page for latest version.
 ## Author Information
 
 - [@markosamuli](https://github.com/markosamuli)
-
