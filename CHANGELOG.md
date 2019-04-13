@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2019-03-10
+
 ### Changed
 
 * Terraform v0.11.13
@@ -28,6 +30,7 @@
 * Terraform v0.11.0
 
 [Unreleased]: https://github.com/markosamuli/ansible-terraform/commits/develop
+[1.2.0]: https://github.com/markosamuli/ansible-terraform/releases/tag/v1.2.0
 [1.1.1]: https://github.com/markosamuli/ansible-terraform/releases/tag/v1.1.1
 [1.1.0]: https://github.com/markosamuli/ansible-terraform/releases/tag/v1.1.0
 [1.0.0]: https://github.com/markosamuli/ansible-terraform/releases/tag/v1.0.0
