@@ -1,5 +1,7 @@
 # markosamuli.terraform
 
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/39522.svg)](https://galaxy.ansible.com/markosamuli/terraform)
+[![Ansible Role](https://img.shields.io/ansible/role/39522.svg)](https://galaxy.ansible.com/markosamuli/terraform)
 [![GitHub release](https://img.shields.io/github/release/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/releases)
 [![License](https://img.shields.io/github/license/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/blob/master/LICENSE)
 
