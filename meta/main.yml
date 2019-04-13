@@ -11,6 +11,7 @@ galaxy_info:
     versions:
     - trusty
     - xenial
+    - bionic
   - name: MacOSX
     versions:
     - '10.12'
