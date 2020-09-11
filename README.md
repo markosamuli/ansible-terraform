@@ -1,9 +1,23 @@
-# markosamuli.terraform
+# DEPRECATED markosamuli.terraform
 
 [![Ansible Quality Score](https://img.shields.io/ansible/quality/39522.svg)](https://galaxy.ansible.com/markosamuli/terraform)
 [![Ansible Role](https://img.shields.io/ansible/role/39522.svg)](https://galaxy.ansible.com/markosamuli/terraform)
 [![GitHub release](https://img.shields.io/github/release/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/releases)
 [![License](https://img.shields.io/github/license/markosamuli/ansible-terraform.svg)](https://github.com/markosamuli/ansible-terraform/blob/master/LICENSE)
+
+This role is no longer maintained and doesn't support installing the latest
+versions of Terraform.
+
+You could use [tfenv](https://github.com/tfutils/tfenv) to manage
+your Terraform versions instead.
+
+See [tfenv][tfenv-role] role in my [`linux-machine`][linux-machine] repository
+for an example.
+
+[tfenv-role]: https://github.com/markosamuli/linux-machine/tree/master/playbooks/roles/tfenv
+[linux-machine]: https://github.com/markosamuli/linux-machine
+
+---
 
 | Branch  | Status |
 |---------|--------|
